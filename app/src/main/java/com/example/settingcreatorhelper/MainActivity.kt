@@ -1,6 +1,7 @@
 package com.example.settingcreatorhelper
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CHECKBO
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CUSTOM
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NORMAL
 import com.example.settingcreatorhelper.model.SettingListBuilder
+import com.example.settingcreatorhelper.model.TextProp
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -32,12 +34,12 @@ class MainActivity : AppCompatActivity() {
         binding.recycler.adapter = adapter
 
         val data = SettingListBuilder().paddingPair(16, 12).addItem{
-            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("角色动作").hintText("攻击")
+            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("角色动作", textColor = "#999999").hintText("攻击")
                 .onLayoutClickProp(ClickProp{
                     Toast.makeText(this@MainActivity, "clicked", Toast.LENGTH_SHORT).show()
-                }).mainTextSize(20).hintTextColor("#333333")
+                })
         }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("光效").hintText("九幽冥火").mainTextColor("#FFF000")
+            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("光效").hintText("九幽冥火")
         }.addItem {
             SetItemBuilder().viewType(VIEW_TYPE_CHECKBOX).mainText("展示外观")
                 .checkBoxProp(CheckBoxProp(true, 50) { _, isChecked ->
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 })
                 .onLayoutClickProp(ClickProp{
                     Toast.makeText(this@MainActivity, "clicked", Toast.LENGTH_SHORT).show()
-                }).mainTextColor("#999999")
+                })
         }.addItem {
             SetItemBuilder().viewType(VIEW_TYPE_CUSTOM).viewBinder(SettingViewBinder(R.layout.setting_normal_item_layout_2) { holder, _ ->
                 val name = holder.itemView.findViewById<TextView>(R.id.setting_name)

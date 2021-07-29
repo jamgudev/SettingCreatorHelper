@@ -1,5 +1,7 @@
 package com.example.settingcreatorhelper.model
 
+import android.graphics.Typeface
+import android.widget.ImageView
 import com.example.settingcreatorhelper.R
 
 object SettingConstants {
@@ -10,14 +12,18 @@ object SettingConstants {
     const val DEFAULT_PADDING_BOTTOM = DEFAULT_PADDING_TOP
 
     // ICON
-    const val DEFAULT_HINT_ICON_SIZE = 30  // dp
-    const val DEFAULT_HINT_ICON_RADIUS = 4 // dp
+    const val DEFAULT_ICON_WIDTH = 30   // dp
+    const val DEFAULT_ICON_HEIGHT = 30  // dp
+    const val DEFAULT_ICON_RADIUS = 0   // dp
+    val DEFAULT_ICON_SCALE_TYPE = ImageView.ScaleType.CENTER_CROP
 
-    // Hint
-    const val DEFAULT_HINT_COLOR = "#999999"
+    // Text
+    val DEFAULT_TEXT_TYPEFACE: Typeface = Typeface.DEFAULT // normal
+    // Hint Text
+    const val DEFAULT_HINT_TEXT_COLOR = "#999999"
     const val DEFAULT_HINT_TEXT_SIZE = 14
-    // Main
-    const val DEFAULT_MAIN_COLOR = "#333333"
+    // Main Text
+    const val DEFAULT_MAIN_TEXT_COLOR = "#333333"
     const val DEFAULT_MAIN_TEXT_SIZE = 16
 
     // CheckBox

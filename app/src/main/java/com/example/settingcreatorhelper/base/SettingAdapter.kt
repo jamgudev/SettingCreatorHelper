@@ -2,19 +2,29 @@ package com.example.settingcreatorhelper.base
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.settingcreatorhelper.databinding.SettingCheckBoxItemLayoutBinding
 import com.example.settingcreatorhelper.databinding.SettingNormalItemLayoutBinding
+import com.example.settingcreatorhelper.model.CheckBoxProp
+import com.example.settingcreatorhelper.model.IconProp
 import com.example.settingcreatorhelper.model.SetItem
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CHECKBOX
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CUSTOM
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NORMAL
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NOT_FOUNT
+import com.example.settingcreatorhelper.model.TextProp
 import com.example.settingcreatorhelper.util.dp2px
 
 class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -81,58 +91,21 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private fun bindCheckBoxViewHolder(binding: SettingCheckBoxItemLayoutBinding, setItem: SetItem) {
-        binding.settingName.text = setItem.mainText
-        binding.settingName.textSize = setItem.mainTextSize.toFloat()
-        binding.settingName.setTextColor(Color.parseColor(setItem.mainTextColor))
+        quickInitialTextData(binding.settingName, setItem.mainTextProp)
 
         // check box setting
-        setItem.checkBoxProp?.apply {
-            val context = binding.settingCheckbox.context
-            val resources = context.resources
-            val drawable = resources.getDrawable(drawableResId)
-            binding.settingCheckbox.background = drawable
-            // 是否选中
-            binding.settingCheckbox.isChecked = checkStatus
-            // 选中状态监听
-            binding.settingCheckbox.setOnCheckedChangeListener(onChecked)
-
-            // 如果设置了宽高比
-            val desiredWidth = width
-            val layoutParams = binding.settingCheckbox.layoutParams
-            layoutParams?.apply {
-                if (whRate > 0) {
-                    width = if (desiredWidth > 0) {
-                        desiredWidth.dp2px(context)
-                    } else drawable.intrinsicWidth
-
-                    height = (width / whRate).toInt()
-                } else if (desiredWidth > 0) {
-                    val rate = drawable.intrinsicWidth * 1.0f / drawable.intrinsicHeight
-                    width = desiredWidth.dp2px(context)
-                    height = (width / rate).toInt()
-                }
-            }
-        }
+        quickInitialCheckBoxData(binding.settingCheckbox, setItem.checkBoxProp)
     }
 
     private fun bindNormalViewHolder(binding: SettingNormalItemLayoutBinding, setItem: SetItem) {
-        binding.settingName.text = setItem.mainText
-        binding.settingName.textSize = setItem.mainTextSize.toFloat()
-        binding.settingName.setTextColor(Color.parseColor(setItem.mainTextColor))
 
-        binding.settingHint.text = setItem.hintText
-        binding.settingHint.textSize = setItem.hintTextSize.toFloat()
-        binding.settingHint.setTextColor(Color.parseColor(setItem.hintTextColor))
+        quickInitialTextData(binding.settingName, setItem.mainTextProp)
 
+        quickInitialTextData(binding.settingHint, setItem.hintTextProp)
 
-        val hintIconUrl = setItem.hintIconUrl
-        val vIcon = binding.settingHintIcon
-        if (TextUtils.isEmpty(hintIconUrl)) {
-            vIcon.visibility = View.GONE
-        } else {
-            Glide.with(vIcon).load(hintIconUrl).into(vIcon)
-            vIcon.visibility = View.VISIBLE
-        }
+        quickInitialIconData(binding.settingHintIcon, setItem.hintIconProp)
+//        quickInitialIconData(binding.settingHintIcon, setItem.hintIconProp)
+
     }
 
     private fun rePadding(setItem: SetItem, v: View) {
@@ -158,5 +131,67 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setData(data: ArrayList<SetItem>) {
         this.mSettingData = data
         notifyDataSetChanged()
+    }
+
+    /**
+     * 初始化TextView快捷方法
+     */
+    private fun quickInitialTextData(textView: TextView, textProp: TextProp?) {
+        textProp?.apply {
+            textView.text = content
+            textView.textSize = textSize.toFloat()
+            textView.setTextColor(Color.parseColor(textColor))
+            textView.typeface = typeface
+        }
+    }
+
+    /**
+     * 初始化ImageView快捷方法
+     */
+    private fun quickInitialIconData(imageView: ImageView, iconProp: IconProp?) {
+        iconProp?.apply {
+            if (TextUtils.isEmpty(iconUrl)) {
+                imageView.visibility = View.GONE
+            } else {
+                // TODO 完善ICON配置
+//                val requestOptions = RequestOptions.
+                Glide.with(imageView).load(iconUrl).into(imageView)
+                imageView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    /**
+     * 初始化CheckBox快捷方法
+     */
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun quickInitialCheckBoxData(checkBox: CheckBox, checkBoxProp: CheckBoxProp?) {
+        checkBoxProp?.apply {
+            val context = checkBox.context
+            val resources = context.resources
+            val drawable = resources.getDrawable(drawableResId)
+            checkBox.background = drawable
+            // 是否选中
+            checkBox.isChecked = checkStatus == true
+            // 选中状态监听
+            checkBox.setOnCheckedChangeListener(onChecked)
+
+            // 如果设置了宽高比
+            val desiredWidth = width
+            val layoutParams = checkBox.layoutParams
+            layoutParams?.apply {
+                if (whRate > 0) {
+                    width = if (desiredWidth > 0) {
+                        desiredWidth.dp2px(context)
+                    } else drawable.intrinsicWidth
+
+                    height = (width / whRate).toInt()
+                } else if (desiredWidth > 0) {
+                    val rate = drawable.intrinsicWidth * 1.0f / drawable.intrinsicHeight
+                    width = desiredWidth.dp2px(context)
+                    height = (width / rate).toInt()
+                }
+            }
+        }
     }
 }

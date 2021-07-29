@@ -1,20 +1,25 @@
 package com.example.settingcreatorhelper.model
 
+import android.graphics.Typeface
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.ImageView
 import com.example.settingcreatorhelper.base.SettingViewBinder
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CLICK_BG
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_ICON_RADIUS
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_ICON_SIZE
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_COLOR
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_SIZE
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_COLOR
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_SCALE_TYPE
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_COLOR
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_SIZE
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_BOTTOM
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_LEFT
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_RIGHT
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_TOP
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_TEXT_TYPEFACE
 
 /**
  * CheckBox配置: checkStatus是否选中，drawableResId自定义背景图资源ID
@@ -22,25 +27,31 @@ import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_T
  * 自定义背景图，使用指定宽高比
  */
 class CheckBoxProp constructor(
-    val checkStatus: Boolean, val drawableResId: Int,
+    val checkStatus: Boolean?, val drawableResId: Int,
     val width: Int, val whRate: Float,
     val onChecked: CompoundButton.OnCheckedChangeListener
 ) {
     /**
      * 使用默认背景图，原始宽度
      */
-    constructor(checkStatus: Boolean, onClick: CompoundButton.OnCheckedChangeListener) : this(checkStatus, -1, onClick)
+    constructor(checkStatus: Boolean, onClick: CompoundButton.OnCheckedChangeListener) :
+            this(checkStatus, -1, onClick)
 
     /**
      * 使用默认背景图，指定宽度
      */
-    constructor(checkStatus: Boolean, width: Int, onClick: CompoundButton.OnCheckedChangeListener):
+    constructor(checkStatus: Boolean, width: Int, onClick: CompoundButton.OnCheckedChangeListener) :
             this(checkStatus, DEFAULT_CHECKBOX_BG, width, -1F, onClick)
 
     /**
      * 自定义背景图，固定宽度，以原始图片的宽高比进行缩放
      */
-    constructor(checkStatus: Boolean, drawableResId: Int, width: Int, onClick: CompoundButton.OnCheckedChangeListener) : this(
+    constructor(
+        checkStatus: Boolean,
+        drawableResId: Int,
+        width: Int,
+        onClick: CompoundButton.OnCheckedChangeListener
+    ) : this(
         checkStatus,
         drawableResId,
         width,
@@ -51,7 +62,12 @@ class CheckBoxProp constructor(
     /**
      * 自定义背景图，固定宽高比，取原始图片宽度，对宽高进行缩放
      */
-    constructor(checkStatus: Boolean, drawableResId: Int, whRate: Float, onClick: CompoundButton.OnCheckedChangeListener): this(
+    constructor(
+        checkStatus: Boolean,
+        drawableResId: Int,
+        whRate: Float,
+        onClick: CompoundButton.OnCheckedChangeListener
+    ) : this(
         checkStatus,
         drawableResId,
         -1,
@@ -63,23 +79,48 @@ class CheckBoxProp constructor(
 /**
  * 点击事件配置：clickDrawableRes 点击时的drawable， to 点击触发的回调
  */
-class ClickProp @JvmOverloads constructor(val clickDrawableRes: Int = DEFAULT_CLICK_BG, val to: (View) -> Unit)
+class ClickProp @JvmOverloads constructor(
+    val clickDrawableRes: Int = DEFAULT_CLICK_BG,
+    val to: ((View) -> Unit)?
+)
 
-// TODO 完善icon配置
-class IconProp()
+/**
+ * 图标配置
+ */
+class IconProp(
+    val iconUrl: String?, val scaleType: ImageView.ScaleType,
+    val width: Int, val height: Int, val radius: Int
+) {
+
+    constructor(iconUrl: String, scaleType: ImageView.ScaleType, width: Int, height: Int) : this(
+        iconUrl,
+        scaleType,
+        width,
+        height,
+        DEFAULT_ICON_RADIUS
+    )
+
+    constructor(iconUrl: String, scaleType: ImageView.ScaleType) : this(
+        iconUrl,
+        scaleType,
+        DEFAULT_ICON_WIDTH,
+        DEFAULT_ICON_HEIGHT
+    )
+
+    constructor(iconUrl: String) : this(iconUrl, DEFAULT_ICON_SCALE_TYPE)
+}
+
+/**
+ * 文字配置
+ */
+class TextProp(val content: String?, val textSize: Int, val textColor: String, val typeface: Typeface)
 
 class SetItem internal constructor(
     val viewType: Int,
-    val iconUrl: String?,
-    val mainText: String,
-    val mainTextSize: Int,
-    val hintText: String?,
-    val hintTextSize: Int,
-    val hintIconUrl: String?,
-    val mainTextColor: String,
-    val hintTextColor: String,
-    val hintIconSize: Int,
-    val hintIconRadius: Int,
+    val mainTextProp: TextProp?,
+    val hintTextProp: TextProp?,
+    val mainIconProp: IconProp?,
+    val hintIconProp: IconProp?,
     // check box
     val checkBoxProp: CheckBoxProp?,
 
@@ -95,16 +136,10 @@ class SetItemBuilder {
 
 
     private var viewType: Int = -1
-    private var iconUrl: String? = null
-    private var mainText: String = ""
-    private var mainTextSize: Int ?= null
-    private var mainTextColor: String? = null
-    private var hintText: String? = null
-    private var hintTextSize: Int? = null
-    private var hintIconUrl: String? = null
-    private var hintTextColor: String? = null
-    private var hintIconSize: Int? = null
-    private var hintIconRadius: Int? = null
+    private var mainTextProp: TextProp? = null
+    private var hintTextProp: TextProp? = null
+    private var mainIconProp: IconProp? = null
+    private var hintIconProp: IconProp? = null
 
     private var checkBoxProp: CheckBoxProp? = null
 
@@ -118,62 +153,67 @@ class SetItemBuilder {
 
     private var isPaddingSet = false
 
+    private var defaultMainTextProp: TextProp? = null
+    private var defaultHintTextProp: TextProp? = null
+
     fun viewType(viewType: Int): SetItemBuilder {
         this.viewType = viewType
         return this
     }
 
-    fun iconUrl(iconUrl: String): SetItemBuilder {
-        this.iconUrl= iconUrl
+    @JvmOverloads
+    fun mainText(
+        content: String?, textSize: Int? = null,
+        textColor: String? = null, typeface: Typeface? = null
+    ): SetItemBuilder {
+        mainTextProp(
+            TextProp(
+                content,
+                textSize ?: DEFAULT_MAIN_TEXT_SIZE,
+                textColor ?: DEFAULT_MAIN_TEXT_COLOR,
+                typeface ?: DEFAULT_TEXT_TYPEFACE
+            )
+        )
         return this
     }
 
-    fun mainText(text: String): SetItemBuilder {
-        this.mainText = text
+    private fun mainTextProp(mainTextProp: TextProp?): SetItemBuilder {
+        this.mainTextProp = mainTextProp
         return this
     }
 
-    fun mainTextSize(textSize: Int): SetItemBuilder {
-        this.mainTextSize = textSize
+    @JvmOverloads
+    fun hintText(
+        content: String?, textSize: Int? = null,
+        textColor: String? = null, typeface: Typeface? = null
+    ): SetItemBuilder {
+        hintTextProp(
+            TextProp(
+                content,
+                textSize ?: DEFAULT_HINT_TEXT_SIZE,
+                textColor ?: DEFAULT_HINT_TEXT_COLOR,
+                typeface ?: DEFAULT_TEXT_TYPEFACE
+            )
+        )
         return this
     }
 
-    fun mainTextColor(textColor: String): SetItemBuilder {
-        this.mainTextColor = textColor
+    private fun hintTextProp(hintTextProp: TextProp?): SetItemBuilder {
+        this.hintTextProp = hintTextProp
         return this
     }
 
-    fun hintText(hintText: String): SetItemBuilder {
-        this.hintText = hintText
+    fun mainIconProp(mainIconProp: IconProp?): SetItemBuilder {
+        this.mainIconProp = mainIconProp
         return this
     }
 
-    fun hintTextSize(hintTextSize: Int): SetItemBuilder {
-        this.hintTextSize = hintTextSize
+    fun hintIconProp(hintIconProp: IconProp?): SetItemBuilder {
+        this.mainIconProp = hintIconProp
         return this
     }
 
-    fun hintIconUrl(hintIconUrl: String?): SetItemBuilder {
-        this.hintIconUrl = hintIconUrl
-        return this
-    }
-
-    fun hintTextColor(hintColor: String): SetItemBuilder {
-        this.hintTextColor = hintColor
-        return this
-    }
-
-    fun hintIconSize(hintIconSize: Int): SetItemBuilder {
-        this.hintIconSize = hintIconSize
-        return this
-    }
-
-    fun hintIconRadius(hintIconRadius: Int): SetItemBuilder {
-        this.hintIconRadius = hintIconRadius
-        return this
-    }
-
-    fun checkBoxProp(checkBoxProp: CheckBoxProp): SetItemBuilder {
+    fun checkBoxProp(checkBoxProp: CheckBoxProp?): SetItemBuilder {
         this.checkBoxProp = checkBoxProp
         return this
     }
@@ -219,16 +259,10 @@ class SetItemBuilder {
     internal fun build(): SetItem {
         return SetItem(
             viewType = viewType,
-            iconUrl = iconUrl,
-            mainText = mainText,
-            mainTextSize = mainTextSize ?: DEFAULT_MAIN_TEXT_SIZE,
-            hintText = hintText,
-            hintTextSize = hintTextSize ?: DEFAULT_HINT_TEXT_SIZE,
-            hintIconUrl = hintIconUrl,
-            mainTextColor = mainTextColor ?: DEFAULT_MAIN_COLOR,
-            hintTextColor = hintTextColor ?: DEFAULT_HINT_COLOR,
-            hintIconSize = hintIconSize ?: DEFAULT_HINT_ICON_SIZE,
-            hintIconRadius = hintIconRadius ?: DEFAULT_HINT_ICON_RADIUS,
+            mainIconProp = mainIconProp,
+            mainTextProp = mainTextProp ?: defaultMainTextProp,
+            hintIconProp = hintIconProp,
+            hintTextProp = hintTextProp ?: defaultHintTextProp,
             checkBoxProp = checkBoxProp,
             paddingLeft = paddingLeft ?: DEFAULT_PADDING_LEFT,
             paddingRight = paddingRight ?: DEFAULT_PADDING_RIGHT,

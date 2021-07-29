@@ -5,13 +5,14 @@
     android:background="#FFFFFF"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/setting_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="设置"
         android:textColor="#333333"
+            android:textStyle="normal"
         android:gravity="center"
         android:textSize="16sp" />
 
