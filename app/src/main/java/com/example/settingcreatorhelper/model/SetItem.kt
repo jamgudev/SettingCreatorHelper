@@ -3,15 +3,15 @@ package com.example.settingcreatorhelper.model
 import android.graphics.Typeface
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.example.settingcreatorhelper.base.SettingViewBinder
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CLICK_BG
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_COLOR
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_SIZE
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_SCALE_TYPE
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_COLOR
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_SIZE
@@ -88,26 +88,60 @@ class ClickProp @JvmOverloads constructor(
  * 图标配置
  */
 class IconProp(
-    val iconUrl: String?, val scaleType: ImageView.ScaleType,
-    val width: Int, val height: Int, val radius: Int
+    @DrawableRes val iconRes: Int?,
+    val iconUrl: String?,
+    val width: Int, val height: Int, val radius: Int,
+    val placeholder: Int, val errorHolder: Int
 ) {
 
-    constructor(iconUrl: String, scaleType: ImageView.ScaleType, width: Int, height: Int) : this(
+    @JvmOverloads
+    constructor(@DrawableRes iconRes: Int? = null, iconUrl: String? = null, width: Int,
+                height: Int, radius: Int, placeholder: Int) : this(
+        iconRes,
         iconUrl,
-        scaleType,
         width,
         height,
-        DEFAULT_ICON_RADIUS
+        radius,
+        placeholder,
+        DEFAULT_ICON_PLACEHOLDER
     )
 
-    constructor(iconUrl: String, scaleType: ImageView.ScaleType) : this(
+    @JvmOverloads
+    constructor(@DrawableRes iconRes: Int? = null, iconUrl: String? = null, width: Int,
+                height: Int, radius: Int) : this(
+        iconRes,
         iconUrl,
-        scaleType,
-        DEFAULT_ICON_WIDTH,
-        DEFAULT_ICON_HEIGHT
+        width,
+        height,
+        radius,
+        DEFAULT_ICON_PLACEHOLDER
     )
 
-    constructor(iconUrl: String) : this(iconUrl, DEFAULT_ICON_SCALE_TYPE)
+    constructor(@DrawableRes iconRes: Int? = null, iconUrl: String? = null, radius: Int): this(
+        iconRes,
+        iconUrl,
+        DEFAULT_ICON_WIDTH,
+        DEFAULT_ICON_HEIGHT,
+        radius
+    )
+
+    @JvmOverloads
+    constructor(@DrawableRes iconRes: Int? = null, iconUrl: String? = null, width: Int, height: Int) : this(
+        iconRes,
+        iconUrl,
+        width,
+        height,
+        DEFAULT_ICON_RADIUS,
+    )
+
+    @JvmOverloads
+    constructor(@DrawableRes iconRes: Int? = null, iconUrl: String? = null) : this(
+        iconRes,
+        iconUrl,
+        DEFAULT_ICON_WIDTH,
+        DEFAULT_ICON_HEIGHT,
+    )
+
 }
 
 /**
@@ -132,6 +166,7 @@ class SetItem internal constructor(
     val clickProp: ClickProp?
 )
 
+// TODO 让IconProp配置像TextProp配置一样简单
 class SetItemBuilder {
 
 
@@ -209,7 +244,7 @@ class SetItemBuilder {
     }
 
     fun hintIconProp(hintIconProp: IconProp?): SetItemBuilder {
-        this.mainIconProp = hintIconProp
+        this.hintIconProp = hintIconProp
         return this
     }
 

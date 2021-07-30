@@ -2,19 +2,24 @@ package com.example.settingcreatorhelper.base
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.example.settingcreatorhelper.databinding.SettingCheckBoxItemLayoutBinding
 import com.example.settingcreatorhelper.databinding.SettingNormalItemLayoutBinding
 import com.example.settingcreatorhelper.model.CheckBoxProp
@@ -103,6 +108,7 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         quickInitialTextData(binding.settingHint, setItem.hintTextProp)
 
+        quickInitialIconData(binding.settingMainIcon, setItem.mainIconProp)
         quickInitialIconData(binding.settingHintIcon, setItem.hintIconProp)
 //        quickInitialIconData(binding.settingHintIcon, setItem.hintIconProp)
 
@@ -148,14 +154,22 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     /**
      * 初始化ImageView快捷方法
      */
+    @SuppressLint("CheckResult")
     private fun quickInitialIconData(imageView: ImageView, iconProp: IconProp?) {
         iconProp?.apply {
-            if (TextUtils.isEmpty(iconUrl)) {
+            if (TextUtils.isEmpty(iconUrl) && iconRes == null) {
                 imageView.visibility = View.GONE
             } else {
-                // TODO 完善ICON配置
-//                val requestOptions = RequestOptions.
-                Glide.with(imageView).load(iconUrl).into(imageView)
+                val context = imageView.context
+                val requestOptions = RequestOptions()
+                        .override(width.dp2px(context), height.dp2px(context))
+                        .transform(CenterCrop(), RoundedCorners(radius.dp2px(context)))
+                        .placeholder(placeholder)
+                        .error(placeholder)
+                val icon = iconUrl ?: iconRes
+                Glide.with(context).load(icon)
+                        .apply(requestOptions)
+                        .into(imageView)
                 imageView.visibility = View.VISIBLE
             }
         }

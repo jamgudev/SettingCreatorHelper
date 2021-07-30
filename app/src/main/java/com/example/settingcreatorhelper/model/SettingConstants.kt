@@ -14,8 +14,9 @@ object SettingConstants {
     // ICON
     const val DEFAULT_ICON_WIDTH = 30   // dp
     const val DEFAULT_ICON_HEIGHT = 30  // dp
-    const val DEFAULT_ICON_RADIUS = 0   // dp
+    const val DEFAULT_ICON_RADIUS = 4   // dp
     val DEFAULT_ICON_SCALE_TYPE = ImageView.ScaleType.CENTER_CROP
+    const val DEFAULT_ICON_PLACEHOLDER = R.drawable.default_img_placeholder
 
     // Text
     val DEFAULT_TEXT_TYPEFACE: Typeface = Typeface.DEFAULT // normal
