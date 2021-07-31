@@ -2,9 +2,6 @@ package com.example.settingcreatorhelper.base
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.example.settingcreatorhelper.databinding.SettingCheckBoxItemLayoutBinding
 import com.example.settingcreatorhelper.databinding.SettingNormalItemLayoutBinding
 import com.example.settingcreatorhelper.model.CheckBoxProp
@@ -157,7 +150,7 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     @SuppressLint("CheckResult")
     private fun quickInitialIconData(imageView: ImageView, iconProp: IconProp?) {
         iconProp?.apply {
-            if (TextUtils.isEmpty(iconUrl) && iconRes == null) {
+            if (target == null) {
                 imageView.visibility = View.GONE
             } else {
                 val context = imageView.context
@@ -165,9 +158,8 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         .override(width.dp2px(context), height.dp2px(context))
                         .transform(CenterCrop(), RoundedCorners(radius.dp2px(context)))
                         .placeholder(placeholder)
-                        .error(placeholder)
-                val icon = iconUrl ?: iconRes
-                Glide.with(context).load(icon)
+                        .error(errorHolder)
+                Glide.with(context).load(target)
                         .apply(requestOptions)
                         .into(imageView)
                 imageView.visibility = View.VISIBLE

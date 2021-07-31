@@ -1,7 +1,5 @@
 package com.example.settingcreatorhelper
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
@@ -12,13 +10,11 @@ import com.example.settingcreatorhelper.base.SettingViewBinder
 import com.example.settingcreatorhelper.databinding.ActivityMainBinding
 import com.example.settingcreatorhelper.model.CheckBoxProp
 import com.example.settingcreatorhelper.model.ClickProp
-import com.example.settingcreatorhelper.model.IconProp
 import com.example.settingcreatorhelper.model.SetItemBuilder
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CHECKBOX
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CUSTOM
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NORMAL
 import com.example.settingcreatorhelper.model.SettingListBuilder
-import com.example.settingcreatorhelper.model.TextProp
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -39,11 +35,12 @@ class MainActivity : AppCompatActivity() {
                     .onLayoutClickProp(ClickProp {
                         Toast.makeText(this@MainActivity, "clicked", Toast.LENGTH_SHORT).show()
                     })
-                    .hintIconProp(IconProp(iconUrl = "https://q.qlogo.cn/qqapp/1104466820/2480FDF9E6072E6536CE5FF7B946674F/100", width = 40, height = 40, radius = 16))
-                    .mainIconProp(IconProp(iconUrl = "https://q.qlogo.cn/qqapp/1104466820/2480FDF9E6072E6536CE5FF7B946674F/100"))
+                    .hintIcon("https://q.qlogo.cn/qqapp/1104466820/2480FDF9E6072E6536CE5FF7B946674F/100", width = 40, height = 40, radius = 16)
+                    .mainIcon("https://q.qlogo.cn/qqapp/1104466820/2480FDF9E6072E6536CE5FF7B946674F/100")
         }.addItem {
             SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("光效").hintText("九幽冥火")
-                    .hintIconProp(IconProp(iconUrl = "http://img.daimg.com/uploads/allimg/210729/3-210H92301020-L.jpg"))
+                    .hintIcon("http://img.daimg.com/uploads/allimg/210729/3-210H92301020-L.jpg")
+                    .mainIcon(R.drawable.default_img_placeholder, 40, 30)
         }.addItem {
             SetItemBuilder().viewType(VIEW_TYPE_CHECKBOX).mainText("展示外观")
                     .checkBoxProp(CheckBoxProp(true, 50) { _, isChecked ->
