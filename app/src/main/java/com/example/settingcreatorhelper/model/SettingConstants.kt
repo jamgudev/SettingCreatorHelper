@@ -20,9 +20,11 @@ object SettingConstants {
 
     // Text
     val DEFAULT_TEXT_TYPEFACE: Typeface = Typeface.DEFAULT // normal
+
     // Hint Text
     const val DEFAULT_HINT_TEXT_COLOR = "#999999"
     const val DEFAULT_HINT_TEXT_SIZE = 14
+
     // Main Text
     const val DEFAULT_MAIN_TEXT_COLOR = "#333333"
     const val DEFAULT_MAIN_TEXT_SIZE = 16
@@ -33,9 +35,26 @@ object SettingConstants {
     // ViewType
     const val VIEW_TYPE_CHECKBOX = 1
     const val VIEW_TYPE_NORMAL = 2
+    const val VIEW_TYPE_TEXT_TITLE = 3
     const val VIEW_TYPE_CUSTOM = 10
     const val VIEW_TYPE_NOT_FOUNT = -11
 
-    // click
+    // ItemDecoration
+    const val DEFAULT_DECORATION_HEIGHT = 1     // dp
+    const val DEFAULT_DIVIDER_OFFSET_X = 0   // dp
+    const val DEFAULT_DIVIDER_OFFSET_Y = 0   // dp
+    const val DEFAULT_DIVIDER_COLOR = "#f0f2f5"
+    const val DEFAULT_DIVIDER_GROUP_COLOR = "#00000000"
+    const val DEFAULT_DECORATION_GROUP_HEIGHT = 10
+
+    // Group ItemDecoration
+    val DEFAULT_DECORATION_PROP_OUTER = DecorationProp(
+        DEFAULT_DECORATION_GROUP_HEIGHT,
+        DEFAULT_DIVIDER_OFFSET_X,
+        DEFAULT_DIVIDER_OFFSET_Y,
+        DEFAULT_DIVIDER_GROUP_COLOR
+    )
+
+    // layout
     const val DEFAULT_CLICK_BG = R.drawable.default_white_gray_selector
 }

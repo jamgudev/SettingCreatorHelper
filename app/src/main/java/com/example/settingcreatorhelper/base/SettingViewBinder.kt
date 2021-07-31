@@ -4,4 +4,4 @@ import androidx.recyclerview.widget.RecyclerView
 
 typealias Binder = (RecyclerView.ViewHolder, Int) -> Unit
 
-class SettingViewBinder(val layoutId: Int, val binder: Binder)
+class SettingViewBinder(val layoutId: Int?, val binder: Binder?)

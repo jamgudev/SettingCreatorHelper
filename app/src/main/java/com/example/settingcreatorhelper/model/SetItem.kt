@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.CompoundButton
 import com.example.settingcreatorhelper.base.SettingViewBinder
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CLICK_BG
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_COLOR
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
 import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
@@ -17,9 +17,9 @@ import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDT
  * 自定义背景图，使用指定宽高比
  */
 class CheckBoxProp constructor(
-    val checkStatus: Boolean?, val drawableResId: Int,
-    val width: Int, val whRate: Float,
-    val onChecked: CompoundButton.OnCheckedChangeListener
+    val checkStatus: Boolean?, val drawableResId: Int?,
+    val width: Int?, val whRate: Float?,
+    val onChecked: CompoundButton.OnCheckedChangeListener?
 ) {
     /**
      * 使用默认背景图，原始宽度
@@ -67,25 +67,40 @@ class CheckBoxProp constructor(
 }
 
 /**
- * 点击事件配置：clickDrawableRes 点击时的drawable， to 点击触发的回调
+ * 点击事件配置：clickDrawableRes 点击时的drawable， onClick 点击触发的回调
+ *
+ *  优先使用bgRes，如果bgRes和bgColor都没有，用默认的
  */
-class ClickProp @JvmOverloads constructor(
-    val clickDrawableRes: Int = DEFAULT_CLICK_BG,
-    val to: ((View) -> Unit)?
-)
+class LayoutProp private constructor(
+    val bgColor: String?,
+    val bgRes: Int?,
+    val onClick: ((View) -> Unit)?
+) {
+
+    @JvmOverloads
+    constructor(bgRes: Int? = null, onClick: ((View) -> Unit)?): this(null, bgRes = bgRes, onClick = onClick)
+
+    /**
+     * 用户传的是一个颜色固定值，可能不需要点击事件，onClick可以不传
+     */
+    @JvmOverloads
+    constructor(bgColor: String?, onClick: ((View) -> Unit)? = null): this(bgColor, null, onClick = onClick)
+}
 
 /**
  * 图标配置
  */
 class IconProp(
     val target: Any? = null,
-    val width: Int, val height: Int, val radius: Int,
-    val placeholder: Int, val errorHolder: Int
+    val width: Int?, val height: Int?, val radius: Int?,
+    val placeholder: Int?, val errorHolder: Int?
 ) {
 
     @JvmOverloads
-    constructor(target: Any? = null, width: Int,
-                height: Int, radius: Int, placeholder: Int) : this(
+    constructor(
+        target: Any? = null, width: Int,
+        height: Int, radius: Int, placeholder: Int
+    ) : this(
         target,
         width,
         height,
@@ -95,8 +110,10 @@ class IconProp(
     )
 
     @JvmOverloads
-    constructor(target: Any? = null, width: Int,
-                height: Int, radius: Int) : this(
+    constructor(
+        target: Any? = null, width: Int,
+        height: Int, radius: Int
+    ) : this(
         target,
         width,
         height,
@@ -104,7 +121,7 @@ class IconProp(
         DEFAULT_ICON_PLACEHOLDER,
     )
 
-    constructor(target: Any? = null, radius: Int): this(
+    constructor(target: Any? = null, radius: Int) : this(
         target,
         DEFAULT_ICON_WIDTH,
         DEFAULT_ICON_HEIGHT,
@@ -131,10 +148,20 @@ class IconProp(
 /**
  * 文字配置
  */
-class TextProp(val content: String?, val textSize: Int, val textColor: String, val typeface: Typeface)
+class TextProp(val content: String?, val textSize: Int?, val textColor: String?, val typeface: Typeface?)
+
+/**
+ * 分割线配置
+ */
+class DecorationProp @JvmOverloads constructor(
+    val height: Int?,
+    val offsetX: Int?,
+    val offsetY: Int?,
+    val decorationColor: String? = DEFAULT_DIVIDER_COLOR
+)
 
 class SetItem internal constructor(
-    val viewType: Int,
+    val viewType: Int?,
     val mainTextProp: TextProp?,
     val hintTextProp: TextProp?,
     val mainIconProp: IconProp?,
@@ -142,11 +169,11 @@ class SetItem internal constructor(
     // check box
     val checkBoxProp: CheckBoxProp?,
 
-    val paddingLeft: Int,
-    val paddingRight: Int,
-    val paddingTop: Int,
-    val paddingBottom: Int,
+    val paddingLeft: Int?,
+    val paddingRight: Int?,
+    val paddingTop: Int?,
+    val paddingBottom: Int?,
     val viewBinder: SettingViewBinder?,
-    val clickProp: ClickProp?
+    val layoutProp: LayoutProp?
 )
 

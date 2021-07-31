@@ -15,13 +15,26 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.settingcreatorhelper.databinding.SettingCheckBoxItemLayoutBinding
 import com.example.settingcreatorhelper.databinding.SettingNormalItemLayoutBinding
+import com.example.settingcreatorhelper.databinding.SettingTextTitleItemLayoutBinding
 import com.example.settingcreatorhelper.model.CheckBoxProp
 import com.example.settingcreatorhelper.model.IconProp
 import com.example.settingcreatorhelper.model.SetItem
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CLICK_BG
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_SIZE
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_BOTTOM
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_LEFT
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_RIGHT
+import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_TOP
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CHECKBOX
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CUSTOM
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NORMAL
 import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NOT_FOUNT
+import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_TEXT_TITLE
 import com.example.settingcreatorhelper.model.TextProp
 import com.example.settingcreatorhelper.util.dp2px
 
@@ -47,6 +60,14 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 CheckBoxViewHolder(binding)
             }
+            VIEW_TYPE_TEXT_TITLE -> {
+                val binding = SettingTextTitleItemLayoutBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                TextTitleViewHolder(binding)
+            }
             else -> {
                 // 自定义布局，使用viewType作为layoutId
                 if (viewType == VIEW_TYPE_NOT_FOUNT)
@@ -62,15 +83,22 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val setItem = mSettingData[position]
 
-        // click
-        setItem.clickProp?.apply {
-            holder.itemView.setBackgroundResource(clickDrawableRes)
-            holder.itemView.setOnClickListener(to)
+        // layout
+        setItem.layoutProp?.apply {
+            // 优先使用bgRes，如果bgRes和bgColor都没有，用默认的
+            if (bgRes != null) {
+                holder.itemView.setBackgroundResource(bgRes)
+            } else if (bgColor != null) {
+                holder.itemView.setBackgroundColor(Color.parseColor(bgColor))
+            } else {
+                holder.itemView.setBackgroundResource(DEFAULT_CLICK_BG)
+            }
+            holder.itemView.setOnClickListener(onClick)
         }
 
         // 自定义布局
         if (setItem.viewType == VIEW_TYPE_CUSTOM && setItem.viewBinder != null) {
-            setItem.viewBinder.binder.invoke(holder, position)
+            setItem.viewBinder.binder?.invoke(holder, position)
             return
         }
 
@@ -85,7 +113,14 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is CheckBoxViewHolder -> {
                 bindCheckBoxViewHolder(holder.binding, setItem)
             }
+            is TextTitleViewHolder -> {
+                bindTextTitleViewHolder(holder.binding, setItem)
+            }
         }
+    }
+
+    private fun bindTextTitleViewHolder(binding: SettingTextTitleItemLayoutBinding, item: SetItem) {
+        quickInitialTextData(binding.settingTitle, item.mainTextProp)
     }
 
     private fun bindCheckBoxViewHolder(binding: SettingCheckBoxItemLayoutBinding, setItem: SetItem) {
@@ -111,8 +146,10 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         setItem.apply {
             val context = v.context
             v.setPadding(
-                paddingLeft.dp2px(context), paddingTop.dp2px(context),
-                paddingRight.dp2px(context), paddingBottom.dp2px(context)
+                paddingLeft?.dp2px(context) ?: DEFAULT_PADDING_LEFT,
+                paddingTop?.dp2px(context) ?: DEFAULT_PADDING_TOP,
+                paddingRight?.dp2px(context) ?: DEFAULT_PADDING_RIGHT,
+                paddingBottom?.dp2px(context) ?: DEFAULT_PADDING_BOTTOM
             )
             v.invalidate()
         }
@@ -124,7 +161,7 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val setItem = mSettingData[position]
         return if (setItem.viewType == VIEW_TYPE_CUSTOM) {
             setItem.viewBinder?.layoutId ?: VIEW_TYPE_NOT_FOUNT
-        } else setItem.viewType
+        } else setItem.viewType ?: VIEW_TYPE_NOT_FOUNT
     }
 
     fun setData(data: ArrayList<SetItem>) {
@@ -138,7 +175,7 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun quickInitialTextData(textView: TextView, textProp: TextProp?) {
         textProp?.apply {
             textView.text = content
-            textView.textSize = textSize.toFloat()
+            textView.textSize = textSize?.toFloat() ?: DEFAULT_HINT_TEXT_SIZE.toFloat()
             textView.setTextColor(Color.parseColor(textColor))
             textView.typeface = typeface
         }
@@ -155,10 +192,16 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             } else {
                 val context = imageView.context
                 val requestOptions = RequestOptions()
-                        .override(width.dp2px(context), height.dp2px(context))
-                        .transform(CenterCrop(), RoundedCorners(radius.dp2px(context)))
-                        .placeholder(placeholder)
-                        .error(errorHolder)
+                        .override(
+                            width?.dp2px(context) ?: DEFAULT_ICON_WIDTH,
+                            height?.dp2px(context) ?: DEFAULT_ICON_HEIGHT
+                        )
+                        .transform(
+                            CenterCrop(),
+                            RoundedCorners(radius?.dp2px(context) ?: DEFAULT_ICON_RADIUS)
+                        )
+                        .placeholder(placeholder ?: DEFAULT_ICON_PLACEHOLDER)
+                        .error(errorHolder ?: DEFAULT_ICON_PLACEHOLDER)
                 Glide.with(context).load(target)
                         .apply(requestOptions)
                         .into(imageView)
@@ -175,7 +218,7 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         checkBoxProp?.apply {
             val context = checkBox.context
             val resources = context.resources
-            val drawable = resources.getDrawable(drawableResId)
+            val drawable = resources.getDrawable(drawableResId ?: DEFAULT_CHECKBOX_BG)
             checkBox.background = drawable
             // 是否选中
             checkBox.isChecked = checkStatus == true
@@ -186,13 +229,13 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val desiredWidth = width
             val layoutParams = checkBox.layoutParams
             layoutParams?.apply {
-                if (whRate > 0) {
-                    width = if (desiredWidth > 0) {
+                if (whRate != null && whRate > 0) {
+                    width = if (desiredWidth != null && desiredWidth > 0) {
                         desiredWidth.dp2px(context)
                     } else drawable.intrinsicWidth
 
                     height = (width / whRate).toInt()
-                } else if (desiredWidth > 0) {
+                } else if (desiredWidth != null && desiredWidth > 0) {
                     val rate = drawable.intrinsicWidth * 1.0f / drawable.intrinsicHeight
                     width = desiredWidth.dp2px(context)
                     height = (width / rate).toInt()

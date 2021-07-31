@@ -33,7 +33,7 @@ class SetItemBuilder {
     private var paddingBottom: Int? = null
 
     private var viewBinder: SettingViewBinder? = null
-    private var clickProp: ClickProp? = null
+    private var layoutprop: LayoutProp? = null
 
     private var isPaddingSet = false
 
@@ -269,8 +269,8 @@ class SetItemBuilder {
         return this
     }
 
-    fun onLayoutClickProp(clickProp: ClickProp?): SetItemBuilder {
-        this.clickProp = clickProp
+    fun layoutProp(layoutProp: LayoutProp?): SetItemBuilder {
+        this.layoutprop = layoutProp
         return this
     }
 
@@ -287,7 +287,7 @@ class SetItemBuilder {
             paddingTop = paddingTop ?: DEFAULT_PADDING_TOP,
             paddingBottom = paddingBottom ?: DEFAULT_PADDING_BOTTOM,
             viewBinder = viewBinder,
-            clickProp = clickProp,
+            layoutProp = layoutprop,
         )
     }
 
