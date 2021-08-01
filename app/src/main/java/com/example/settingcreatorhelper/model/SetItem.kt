@@ -4,12 +4,12 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.CompoundButton
 import com.example.settingcreatorhelper.base.SettingViewBinder
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_CHECKBOX_BG
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DIVIDER_COLOR
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_PLACEHOLDER
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_RADIUS
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_WIDTH
 
 /**
  * CheckBox配置: checkStatus是否选中，drawableResId自定义背景图资源ID
@@ -74,17 +74,17 @@ class CheckBoxProp constructor(
 class LayoutProp private constructor(
     val bgColor: String?,
     val bgRes: Int?,
-    val onClick: ((View) -> Unit)?
+    val onClick: (View.OnClickListener)?
 ) {
 
     @JvmOverloads
-    constructor(bgRes: Int? = null, onClick: ((View) -> Unit)?): this(null, bgRes = bgRes, onClick = onClick)
+    constructor(bgRes: Int? = null, onClick: (View.OnClickListener)?): this(null, bgRes = bgRes, onClick = onClick)
 
     /**
      * 用户传的是一个颜色固定值，可能不需要点击事件，onClick可以不传
      */
     @JvmOverloads
-    constructor(bgColor: String?, onClick: ((View) -> Unit)? = null): this(bgColor, null, onClick = onClick)
+    constructor(bgColor: String?, onClick: (View.OnClickListener)? = null): this(bgColor, null, onClick = onClick)
 }
 
 /**

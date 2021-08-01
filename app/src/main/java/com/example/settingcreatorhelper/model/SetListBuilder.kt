@@ -2,20 +2,21 @@ package com.example.settingcreatorhelper.model
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.settingcreatorhelper.base.SettingAdapter
 import com.example.settingcreatorhelper.base.SettingItemDecoration
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DECORATION_GROUP_HEIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DECORATION_HEIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_OFFSET_X
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_OFFSET_Y
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DECORATION_PROP_OUTER
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_DIVIDER_GROUP_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_BOTTOM
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_LEFT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_RIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_TOP
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DIVIDER_COLOR
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DECORATION_GROUP_HEIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DECORATION_HEIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DIVIDER_OFFSET_X
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DIVIDER_OFFSET_Y
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DECORATION_PROP_OUTER
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_DIVIDER_GROUP_COLOR
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_BOTTOM
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_LEFT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_RIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_TOP
 
-class SettingListBuilder(private val recyclerView: RecyclerView) {
+class SetListBuilder(private val recyclerView: RecyclerView) {
 
     // padding
     private var paddingLeft = DEFAULT_PADDING_LEFT
@@ -51,30 +52,26 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
      */
     private var groupDecorationCount: Int = 0
 
-    fun paddingY(paddingY: Int?): SettingListBuilder {
-        paddingInset(null, paddingY, null, paddingY)
-        return this
+    fun paddingY(paddingY: Int?): SetListBuilder {
+        return paddingInset(null, paddingY, null, paddingY)
     }
 
-    fun paddingX(paddingX: Int?): SettingListBuilder {
-        paddingInset(paddingX, null, paddingX, null)
-        return this
+    fun paddingX(paddingX: Int?): SetListBuilder {
+        return paddingInset(paddingX, null, paddingX, null)
     }
 
-    fun paddingPair(x: Int?, y: Int?): SettingListBuilder {
-        paddingInset(x, y, x, y)
-        return this
+    fun paddingPair(x: Int?, y: Int?): SetListBuilder {
+        return paddingInset(x, y, x, y)
     }
 
-    fun paddingAll(all: Int?): SettingListBuilder {
-        paddingInset(all, all, all, all)
-        return this
+    fun paddingAll(all: Int?): SetListBuilder {
+        return paddingInset(all, all, all, all)
     }
 
-    fun paddingInset(
+    private fun paddingInset(
         left: Int?, top: Int?,
         right: Int?, bottom: Int?
-    ): SettingListBuilder {
+    ): SetListBuilder {
         isParentPaddingSet = true
         paddingTop = top ?: DEFAULT_PADDING_TOP
         paddingBottom = bottom ?: DEFAULT_PADDING_BOTTOM
@@ -83,7 +80,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
         return this
     }
 
-    fun showDecoration(isShow: Boolean?): SettingListBuilder {
+    fun showDecoration(isShow: Boolean?): SetListBuilder {
         isShowItemDecoration = isShow == true
         return this
     }
@@ -112,7 +109,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
     /**
      * @see decorationInner
      */
-    fun decorationOfTheme(height: Int?, offsetX: Int?, offsetY: Int?, color: String?): SettingListBuilder {
+    fun decorationOfTheme(height: Int?, offsetX: Int?, offsetY: Int?, color: String?): SetListBuilder {
         return decorationInner(height, offsetX, offsetY, color)
     }
 
@@ -120,7 +117,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
      * call this to set decoration prop (in dp), and method [showDecoration] will be
      * called immediately with true to be set
      */
-    private fun decorationInner(height: Int?, offsetX: Int?, offsetY: Int?, color: String?): SettingListBuilder {
+    private fun decorationInner(height: Int?, offsetX: Int?, offsetY: Int?, color: String?): SetListBuilder {
         this.decorationHeight = height ?: DEFAULT_DECORATION_HEIGHT
         this.decorationOffsetX = offsetX ?: DEFAULT_DIVIDER_OFFSET_X
         this.decorationOffsetY = offsetY ?: DEFAULT_DIVIDER_OFFSET_Y
@@ -138,7 +135,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
         )
     }
 
-    fun decorationOfGroup(height: Int?, offsetX: Int?, offsetY: Int?, color: String?) : SettingListBuilder {
+    fun decorationOfGroup(height: Int?, offsetX: Int?, offsetY: Int?, color: String?) : SetListBuilder {
         this.groupItemDecorationProp = DecorationProp(
             height ?: DEFAULT_DECORATION_GROUP_HEIGHT,
             offsetX ?: DEFAULT_DIVIDER_OFFSET_X,
@@ -149,7 +146,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
     }
 
 
-    fun addItem(invoker: (() -> SetItemBuilder)?): SettingListBuilder {
+    fun addItem(invoker: (() -> SetItemBuilder)?): SetListBuilder {
         invoker ?: return this
 
         return addItemInner(invoker.invoke())
@@ -161,12 +158,12 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
     }*/
 
 
-    private fun addItemInner(itemBuilder: SetItemBuilder?, fixProp: DecorationProp? = null): SettingListBuilder {
+    private fun addItemInner(itemBuilder: SetItemBuilder?, fixProp: DecorationProp? = null): SetListBuilder {
         itemBuilder ?: return this
 
-        // 没有定制，在Adapter中设置了padding，则覆盖
+        // item没有定制，在Adapter中设置了padding，则覆盖
         if (!itemBuilder.isPaddingChanged() && isParentPaddingSet) {
-            itemBuilder.paddingInsets(paddingLeft, paddingTop, paddingRight, paddingBottom)
+            itemBuilder.paddingPair(paddingLeft, paddingTop)
         }
         setItemList.add(itemBuilder.build())
 
@@ -186,7 +183,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
         return this
     }
 
-    fun addItems(invoker: (() -> ArrayList<SetItemBuilder>)?): SettingListBuilder {
+    fun addItems(invoker: (() -> ArrayList<SetItemBuilder>)?): SetListBuilder {
         invoker ?: return this
         invoker.invoke().forEach {
             addItemInner(it)
@@ -201,7 +198,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
         return this
     }*/
 
-    fun addGroupItem(invoker: (() -> SetItemBuilder)?): SettingListBuilder {
+    fun addGroupItem(invoker: (() -> SetItemBuilder)?): SetListBuilder {
         invoker ?: return this
 
         val builder = invoker.invoke()
@@ -217,7 +214,7 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
     fun addGroupItems(
         innerDecorationProp: DecorationProp? = null,
         invoker: (() -> ArrayList<SetItemBuilder>)?
-    ): SettingListBuilder {
+    ): SetListBuilder {
         invoker ?: return this
 
         val itemBuilders = invoker.invoke()
@@ -234,9 +231,12 @@ class SettingListBuilder(private val recyclerView: RecyclerView) {
         return this
     }
 
-    fun build(): ArrayList<SetItem> {
+    fun build(): SettingAdapter {
         bindDecoration()
-        return setItemList
+        val adapter = SettingAdapter()
+        recyclerView.adapter = adapter
+        adapter.setData(setItemList)
+        return adapter
     }
 
     private fun bindDecoration() {

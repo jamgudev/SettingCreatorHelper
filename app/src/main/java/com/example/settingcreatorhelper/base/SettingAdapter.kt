@@ -19,22 +19,22 @@ import com.example.settingcreatorhelper.databinding.SettingTextTitleItemLayoutBi
 import com.example.settingcreatorhelper.model.CheckBoxProp
 import com.example.settingcreatorhelper.model.IconProp
 import com.example.settingcreatorhelper.model.SetItem
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CHECKBOX_BG
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_CLICK_BG
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_SIZE
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_BOTTOM
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_LEFT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_RIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_TOP
-import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CHECKBOX
-import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_CUSTOM
-import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NORMAL
-import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_NOT_FOUNT
-import com.example.settingcreatorhelper.model.SettingConstants.VIEW_TYPE_TEXT_TITLE
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_CHECKBOX_BG
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_CLICK_BG
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_HINT_TEXT_SIZE
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_PLACEHOLDER
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_RADIUS
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_WIDTH
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_BOTTOM
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_LEFT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_RIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_TOP
+import com.example.settingcreatorhelper.model.SetConstants.VIEW_TYPE_CHECKBOX
+import com.example.settingcreatorhelper.model.SetConstants.VIEW_TYPE_CUSTOM
+import com.example.settingcreatorhelper.model.SetConstants.VIEW_TYPE_NORMAL
+import com.example.settingcreatorhelper.model.SetConstants.VIEW_TYPE_NOT_FOUNT
+import com.example.settingcreatorhelper.model.SetConstants.VIEW_TYPE_TEXT_TITLE
 import com.example.settingcreatorhelper.model.TextProp
 import com.example.settingcreatorhelper.util.dp2px
 
@@ -86,24 +86,28 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         // layout
         setItem.layoutProp?.apply {
             // 优先使用bgRes，如果bgRes和bgColor都没有，用默认的
-            if (bgRes != null) {
-                holder.itemView.setBackgroundResource(bgRes)
-            } else if (bgColor != null) {
-                holder.itemView.setBackgroundColor(Color.parseColor(bgColor))
-            } else {
-                holder.itemView.setBackgroundResource(DEFAULT_CLICK_BG)
+            when {
+                bgRes != null -> {
+                    holder.itemView.setBackgroundResource(bgRes)
+                }
+                bgColor != null -> {
+                    holder.itemView.setBackgroundColor(Color.parseColor(bgColor))
+                }
+                else -> {
+                    holder.itemView.setBackgroundResource(DEFAULT_CLICK_BG)
+                }
             }
             holder.itemView.setOnClickListener(onClick)
         }
+
+        // padding
+        rePadding(setItem, holder.itemView)
 
         // 自定义布局
         if (setItem.viewType == VIEW_TYPE_CUSTOM && setItem.viewBinder != null) {
             setItem.viewBinder.binder?.invoke(holder, position)
             return
         }
-
-        // padding
-        rePadding(setItem, holder.itemView)
 
         // 赋值
         when (holder) {
@@ -145,11 +149,15 @@ class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun rePadding(setItem: SetItem, v: View) {
         setItem.apply {
             val context = v.context
+            val paddingLeft = paddingLeft?.dp2px(context) ?: DEFAULT_PADDING_LEFT
+            val paddingTop = paddingTop?.dp2px(context) ?: DEFAULT_PADDING_TOP
+            val paddingRight = paddingRight?.dp2px(context) ?: DEFAULT_PADDING_RIGHT
+            val paddingBottom = paddingBottom?.dp2px(context) ?: DEFAULT_PADDING_BOTTOM
             v.setPadding(
-                paddingLeft?.dp2px(context) ?: DEFAULT_PADDING_LEFT,
-                paddingTop?.dp2px(context) ?: DEFAULT_PADDING_TOP,
-                paddingRight?.dp2px(context) ?: DEFAULT_PADDING_RIGHT,
-                paddingBottom?.dp2px(context) ?: DEFAULT_PADDING_BOTTOM
+                paddingLeft,
+                paddingTop,
+                paddingRight,
+                paddingBottom
             )
             v.invalidate()
         }

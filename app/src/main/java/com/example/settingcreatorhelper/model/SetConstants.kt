@@ -4,7 +4,7 @@ import android.graphics.Typeface
 import android.widget.ImageView
 import com.example.settingcreatorhelper.R
 
-object SettingConstants {
+object SetConstants {
     // Padding
     const val DEFAULT_PADDING_LEFT = 16   // dp
     const val DEFAULT_PADDING_RIGHT = DEFAULT_PADDING_LEFT

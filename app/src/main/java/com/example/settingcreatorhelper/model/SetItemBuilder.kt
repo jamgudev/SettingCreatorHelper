@@ -2,19 +2,19 @@ package com.example.settingcreatorhelper.model
 
 import android.graphics.Typeface
 import com.example.settingcreatorhelper.base.SettingViewBinder
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_HINT_TEXT_SIZE
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_HEIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_PLACEHOLDER
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_RADIUS
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_ICON_WIDTH
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_COLOR
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_MAIN_TEXT_SIZE
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_BOTTOM
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_LEFT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_RIGHT
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_PADDING_TOP
-import com.example.settingcreatorhelper.model.SettingConstants.DEFAULT_TEXT_TYPEFACE
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_HINT_TEXT_COLOR
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_HINT_TEXT_SIZE
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_HEIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_PLACEHOLDER
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_RADIUS
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_ICON_WIDTH
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_MAIN_TEXT_COLOR
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_MAIN_TEXT_SIZE
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_BOTTOM
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_LEFT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_RIGHT
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_PADDING_TOP
+import com.example.settingcreatorhelper.model.SetConstants.DEFAULT_TEXT_TYPEFACE
 
 class SetItemBuilder {
 
@@ -237,21 +237,22 @@ class SetItemBuilder {
     }
 
     fun paddingX(paddingX: Int): SetItemBuilder {
-        paddingInsets(paddingX, DEFAULT_PADDING_TOP, paddingX, DEFAULT_PADDING_BOTTOM)
-        return this
+        return paddingInsets(paddingX, DEFAULT_PADDING_TOP, paddingX, DEFAULT_PADDING_BOTTOM)
     }
 
     fun paddingY(paddingY: Int): SetItemBuilder {
-        paddingInsets(DEFAULT_PADDING_LEFT, paddingY, DEFAULT_PADDING_RIGHT, paddingY)
-        return this
+        return paddingInsets(DEFAULT_PADDING_LEFT, paddingY, DEFAULT_PADDING_RIGHT, paddingY)
+    }
+
+    fun paddingPair(x: Int, y: Int): SetItemBuilder {
+        return paddingInsets(x, y, x, y)
     }
 
     fun paddingAll(paddingAll: Int): SetItemBuilder {
-        paddingInsets(paddingAll, paddingAll, paddingAll, paddingAll)
-        return this
+        return paddingInsets(paddingAll, paddingAll, paddingAll, paddingAll)
     }
 
-    fun paddingInsets(left: Int, top: Int, right: Int, bottom: Int): SetItemBuilder {
+    private fun paddingInsets(left: Int, top: Int, right: Int, bottom: Int): SetItemBuilder {
         isPaddingSet = true
         this.paddingLeft = left
         this.paddingTop = top
@@ -264,7 +265,7 @@ class SetItemBuilder {
         return isPaddingSet
     }
 
-    fun viewBinder(binder: SettingViewBinder): SetItemBuilder {
+    fun viewBinder(binder: SettingViewBinder?): SetItemBuilder {
         this.viewBinder = binder
         return this
     }
