@@ -2,7 +2,6 @@
 buildscript {
     ext {
         kotlin_version = "1.4.10"
-        glide_version = "4.11.0"
     }
 
     repositories {
@@ -24,6 +23,9 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+        maven {
+            url '/Users/gara/Desktop/projects/SettingCreatorHelper/repository'
+        }
     }
 }
 
