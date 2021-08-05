@@ -1,16 +1,12 @@
-### SettingPie
-
-***
+# SettingPie
 
 SettingPie是一个拓展Android库，使Android开发设置页变得非常容易，它通过代码调用的方式，不仅提供了常见的设置布局来应对基本的设置列表需求，还支持自定义设置布局以处理更复杂的布局。
 
-### Quick Setup
-
-***
+## Quick Setup
 
 编辑你项目的build.gradle文件，然后添加如下依赖。
 
-```
+```groovy
 repositories {
 	mavenCentral()
 }
@@ -22,13 +18,9 @@ dependencies {
 
 添加完毕后，你就可以使用了。
 
-### Basic Usage
-
-***
+## Basic Usage
 
 SettingPie的使用非常流畅方便。
-
-
 
 例如下面一个设置页
 
@@ -38,45 +30,44 @@ SettingPie的使用非常流畅方便。
 
 ```kotlin
 val iconUrl = "https://q.qlogo.cn/qqapp/1104466820/2480FDF9E6072E6536CE5FF7B946674F/100"
-        SetListBuilder(vRecycler).showDecoration(true).paddingPair(16, 16).addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("社区资料设置", 14, "#999999")
-                    .paddingY(6)
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("ni").hintIcon(iconUrl, 25, 25, 16)
-                    .layoutProp(LayoutProp {
-                        Toast.makeText(...).show()
-                    })
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("头像框显示")
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("角色卡通用设置", 14, "#999999").paddingY(6)
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("背景图设置").hintText("曙光之城")
-                    .hintIcon(iconUrl, 4)
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("端游角色卡设置", 14, "#999999").paddingY(6)
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_CHECKBOX).mainText("展示角色装扮外观")
-                    .checkBoxProp(CheckBoxProp(true, 50, null))
-        }.addItem {
-            SetItemBuilder().viewType(VIEW_TYPE_CUSTOM).viewBinder(SettingViewBinder(R.layout.test_layout) { holder, pos ->
-                holder.itemView.findViewById<TextView>(R.id.vBgNames).text = "角色动作"
-                holder.itemView.findViewById<TextView>(R.id.vBgActTipss).text = "新活动"
-                holder.itemView.findViewById<TextView>(R.id.vBgDescs).text = "行走"
+
+SetListBuilder(vRecycler).showDecoration(true).paddingPair(16, 16).addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("社区资料设置", 14, "#999999")
+            .paddingY(6)
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("ni").hintIcon(iconUrl, 25, 25, 16)
+            .layoutProp(LayoutProp {
+                Toast.makeText(...).show()
             })
-        }.build()
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("头像框显示")
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("角色卡通用设置", 14, "#999999").paddingY(6)
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_NORMAL).mainText("背景图设置").hintText("曙光之城")
+            .hintIcon(iconUrl, 4)
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE).mainText("端游角色卡设置", 14, "#999999").paddingY(6)
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_CHECKBOX).mainText("展示角色装扮外观")
+            .checkBoxProp(CheckBoxProp(true, 50, null))
+}.addItem {
+    SetItemBuilder().viewType(VIEW_TYPE_CUSTOM).viewBinder(SettingViewBinder(R.layout.test_layout) { holder, pos ->
+        holder.itemView.findViewById<TextView>(R.id.vBgNames).text = "角色动作"
+        holder.itemView.findViewById<TextView>(R.id.vBgActTipss).text = "新活动"
+        holder.itemView.findViewById<TextView>(R.id.vBgDescs).text = "行走"
+    })
+}.build()
 ```
 每一项设置项都通过代码设置，并最终生成一个设置列表，SettingPie会根据列表中设置项的顺序，生成设置列表显示到对应的RecyclerView中。
 
-### 详细配置
+## 详细配置
 
-***
-
-#### 1. SetListBuilder配置
+1. SetListBuilder配置
 
 可以通过SetListBuilder，设置用于整个列表的主题配置，例如边距，列表分割线，以及列表右端箭头配置等，**在SetListBuilder中设置的属性配置，将被适用于所有的设置子项，前提是该设置子项自身没有对指定属性进行配置**
 
-##### 内边距
+**内边距**
 
 如果，你要设置整个设置页所有子项的内边距属性，你可以这样设置
 
@@ -94,7 +85,7 @@ SetListBuilder(recyclerView)
 
 &emsp;
 
-##### 分割线
+**分割线**
 
 如果你还想让各个子项之间用间隔线隔开，这样设置
 
@@ -120,7 +111,7 @@ SetListBuilder(binding.recycler)
 
 &emsp;
 
-##### 组分割线和组内分割线
+**组分割线和组内分割线**
 
 SettingPie的分割线中，除了正常的分割线以外，还区分组分割线和组内分割线
 
@@ -136,18 +127,18 @@ SettingPie中引用组的概念，将同类的设置放在一块成组，Setting
 
 ```kotlin
 SetListBuilder(mBinding.recycler)
-				 // 自定义正常分割线样式
+         // 自定义正常分割线样式
         .decorationOfTheme(1, 0, 0, "#333333")
-				 // 自定义组分割线样式 
+         // 自定义组分割线样式 
         .decorationOfGroup(10, "#999999")
-				 // 在添加组设置项时，传入DecorationProp，
-				 // 设置该组内分割线样式
-				.addGroupItems(new DecorationProp(2, 32, 0, "#000000"), ...)
+         // 在添加组设置项时，传入DecorationProp，
+         // 设置该组内分割线样式
+        .addGroupItems(new DecorationProp(2, 32, 0, "#000000"), ...)
 ```
 
 
 
-##### 角标
+**角标**
 
 ![5_arrow_show][5_arrow_show]
 
@@ -168,7 +159,7 @@ SetListBuilder(mBinding.recycler)
 
 &emsp;
 
-#### 2. SetItemBuilder配置
+2. SetItemBuilder配置
 
 用于配置某个设置子项，目前支持配置的属性如下：
 
@@ -185,15 +176,13 @@ SetListBuilder(mBinding.recycler)
 
 ![6_type_normal_show][6_type_normal_show]
 
-##### ViewType
+**ViewType**
 
 当前SettingPie支持ViewType有：**VIEW_TYPE_NORMAL**，**VIEW_TYPE_CHECKBOX**，**VIEW_TYPE_TEXT_TITLE**，**VIEW_TYPE_CUSTOM（自定义布局）**
 
 1. VIEW_TYPE_NORMAL
 
 ![7_type_normal][7_type_normal]
-
-
 
 2. VIEW_TYPE_CHECKBOX
 
@@ -234,7 +223,7 @@ typealias Binder = (RecyclerView.ViewHolder, Int) -> Unit
 
 第一个参数传入自定义布局layoutId，第二个传入binder，这个binder相当于RecyclerView的onBindViewHolder()方法，用户传入后，SettingPie在绑定数据时会调用该binder完成对自定义布局的初始化。
 
-##### LayoutProp
+**LayoutProp**
 
 通用设置页的核心之一，就是定义每个设置项的点击事件以及相应的点击效果。SettingPie同样暴露了这样的接口，将其配置封装在了LayoutProp中。
 
@@ -261,10 +250,23 @@ class LayoutProp private constructor(
 }
 ```
 
+## LICENSE
 
+```
+Copyright (C) jamgu, SettingPie Open Source Project
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
+   http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 
 [1_quick_look]: ./pics/1_quick_look.png
