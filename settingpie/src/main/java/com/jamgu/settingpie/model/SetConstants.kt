@@ -36,13 +36,6 @@ object SetConstants {
     // CheckBox
     val DEFAULT_CHECKBOX_BG = R.drawable.default_checkbox_selector
 
-    // ViewType
-    const val VIEW_TYPE_CHECKBOX = 1
-    const val VIEW_TYPE_NORMAL = 2
-    const val VIEW_TYPE_TEXT_TITLE = 3
-    const val VIEW_TYPE_CUSTOM = 10
-    const val VIEW_TYPE_NOT_FOUNT = -11
-
     // ItemDecoration
     const val DEFAULT_DECORATION_HEIGHT = 1     // dp
     const val DEFAULT_DIVIDER_OFFSET_X = 0   // dp

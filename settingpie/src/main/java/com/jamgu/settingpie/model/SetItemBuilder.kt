@@ -35,6 +35,9 @@ class SetItemBuilder {
     private var viewBinder: SettingViewBinder? = null
     private var layoutprop: LayoutProp? = null
 
+    /**
+     * viewType: @see[ViewType]
+     */
     fun viewType(viewType: Int): SetItemBuilder {
         this.viewType = viewType
         return this

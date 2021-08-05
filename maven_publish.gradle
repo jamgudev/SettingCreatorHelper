@@ -1,0 +1,115 @@
+//if (project.hasProperty("android")) { // Android libraries
+//    task sourcesJar(type: Jar) {
+//        classifier = 'sources'
+//        from android.sourceSets.main.java.srcDirs
+//    }
+//
+//    task javadoc(type: Javadoc) {
+//        // https://github.com/novoda/bintray-release/issues/71
+////        excludes = ['**/*.kt'] // < ---- Exclude all kotlin files from javadoc file.
+//        source = android.sourceSets.main.java.srcDirs
+//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//        options.encoding = "utf-8"
+//        options.charSet = "utf-8"
+//    }
+//} else { // Java libraries
+//    task sourcesJar(type: Jar, dependsOn: classes) {
+//        classifier = 'sources'
+//        from sourceSets.main.allSource
+//    }
+//}
+//
+//// 强制 Java/JavaDoc 等的编码为 UTF-8
+//tasks.withType(JavaCompile) {
+//    options.encoding = "UTF-8"
+//}
+//
+//tasks.withType(Javadoc) {
+//    options.encoding = "UTF-8"
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//// add javadoc/source jar tasks as artifacts
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def ossrhUsername = properties.getProperty("ossrhUsername")
+def ossrhPassword = properties.getProperty("ossrhPassword")
+
+def PUBLISH_GROUP_ID = "io.github.jamgudev" //这里可以不是直接申请时候的groupId只要开头是就可以
+
+def PUBLISH_ARTIFACT_ID = "settingpie"
+
+def PUBLISH_VERSION = "1.0.0" // android.defaultConfig.versionName //这个是直接获取的库gradle里配置好的版本号，不用到处修改版本号，只需要维护一份就可以。
+
+//签名
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.groupId = PUBLISH_GROUP_ID
+            pom.artifactId = PUBLISH_ARTIFACT_ID
+            pom.version = PUBLISH_VERSION
+
+            pom.project {
+                name 'settingpie sdk'
+                packaging 'aar' //我这里发布的是安卓的包，所有写的aar
+                // optionally artifactId can be defined here
+                description 'Provides a fast way to generate a list of Settings'
+                url 'https://github.com/jamgu996'
+
+                scm {
+                    connection 'https://github.com/jamgu996/SettingCreatorHelper'
+                    developerConnection 'https://github.com/jamgu996/SettingCreatorHelper.git'
+                    url 'https://github.com/jamgu996/SettingCreatorHelper'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'jamgu'
+                        name 'jamgu'
+                        email '826630153@qq.com'
+                    }
+                }
+            }
+        }
+    }
+}

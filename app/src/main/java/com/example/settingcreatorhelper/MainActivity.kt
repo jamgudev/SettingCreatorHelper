@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.jamgu.settingpie.base.SettingViewBinder
 import com.example.settingcreatorhelper.databinding.ActivityMainBinding
+import com.jamgu.settingpie.base.SettingViewBinder
 import com.jamgu.settingpie.demo.PieTestActivity
 import com.jamgu.settingpie.model.CheckBoxProp
 import com.jamgu.settingpie.model.LayoutProp
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_CHECKBOX
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_CUSTOM
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_NORMAL
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_TEXT_TITLE
 import com.jamgu.settingpie.model.SetItemBuilder
 import com.jamgu.settingpie.model.SetListBuilder
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_CHECKBOX
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_CUSTOM
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_NORMAL
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_TEXT_TITLE
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         val adapter = SetListBuilder(binding.recycler)
+                .paddingPair(16, 12)
                 .showDecoration(true)
                 .arrowOfTheme(false)
                 .decorationOfGroup(16)

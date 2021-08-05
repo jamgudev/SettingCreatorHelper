@@ -153,7 +153,7 @@ class SetListBuilder(private val recyclerView: RecyclerView) {
     /**
      * add Item/Items 最终都会跑到这
      */
-    private fun addItemInner(itemBuilder: SetItemBuilder?, PropWanted: DecorationProp? = null): SetListBuilder {
+    private fun addItemInner(itemBuilder: SetItemBuilder?, decorationPropWanted: DecorationProp? = null): SetListBuilder {
         itemBuilder ?: return this
 
         // item没有定制，在Adapter中设置了padding，则覆盖
@@ -171,8 +171,9 @@ class SetListBuilder(private val recyclerView: RecyclerView) {
 
         setItemList.add(itemBuilder.build())
 
-        if (PropWanted != null) {
-            mItemDecorationProps.add(PropWanted)
+        if (decorationPropWanted != null) {
+            mItemDecorationProps.add(decorationPropWanted)
+            showDecoration(true)
             return this
         }
 

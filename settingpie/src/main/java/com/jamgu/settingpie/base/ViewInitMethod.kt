@@ -139,6 +139,7 @@ internal fun initialLayoutProp(layoutProp: LayoutProp?, holder: RecyclerView.Vie
 @SuppressLint("UseCompatLoadingForDrawables")
 internal fun initialCheckBoxData(checkBox: CheckBox, checkBoxProp: CheckBoxProp?) {
     if (checkBoxProp == null) {
+        checkBox.setBackgroundResource(SetConstants.DEFAULT_CHECKBOX_BG)
         checkBox.visibility = View.GONE
         return
     }

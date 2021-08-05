@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_CHECKBOX
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_CUSTOM
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_NORMAL
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_NOT_FOUNT
-import com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_TEXT_TITLE
-import com.jamgu.settingpie.model.SetItem
 import com.jamgu.settingpie.databinding.SettingCheckBoxItemLayoutBinding
 import com.jamgu.settingpie.databinding.SettingNormalItemLayoutBinding
 import com.jamgu.settingpie.databinding.SettingTextTitleItemLayoutBinding
+import com.jamgu.settingpie.model.SetItem
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_CHECKBOX
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_CUSTOM
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_NORMAL
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_NOT_FOUNT
+import com.jamgu.settingpie.model.ViewType.VIEW_TYPE_TEXT_TITLE
 
 class SettingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

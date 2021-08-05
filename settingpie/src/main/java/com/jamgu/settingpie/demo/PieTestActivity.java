@@ -1,8 +1,8 @@
 package com.jamgu.settingpie.demo;
 
-import static com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_CHECKBOX;
-import static com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_NORMAL;
-import static com.jamgu.settingpie.model.SetConstants.VIEW_TYPE_TEXT_TITLE;
+import static com.jamgu.settingpie.model.ViewType.VIEW_TYPE_CHECKBOX;
+import static com.jamgu.settingpie.model.ViewType.VIEW_TYPE_NORMAL;
+import static com.jamgu.settingpie.model.ViewType.VIEW_TYPE_TEXT_TITLE;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +11,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.jamgu.settingpie.R;
 import com.jamgu.settingpie.model.CheckBoxProp;
+import com.jamgu.settingpie.model.DecorationProp;
 import com.jamgu.settingpie.model.LayoutProp;
 import com.jamgu.settingpie.model.SetItemBuilder;
 import com.jamgu.settingpie.model.SetListBuilder;
@@ -32,11 +34,15 @@ public class PieTestActivity extends AppCompatActivity {
 
         new SetListBuilder(mBinding.recycler)
                 .showDecoration(true)
+                .arrowOfTheme(true)
+//                .decorationOfTheme(1, 0, 0, "#333333")
+//                .decorationOfGroup(10, "#999999")
                 .addItem(new Function0<SetItemBuilder>() {
                     @Override
                     public SetItemBuilder invoke() {
                         return new SetItemBuilder().viewType(VIEW_TYPE_TEXT_TITLE)
-                                .mainText("资料设置", 14, "#999999");
+                                .mainText("资料设置", 14, "#999999")
+                                .checkBoxProp(new CheckBoxProp(true, null));
                     }
                 })
                 .addItem(new Function0<SetItemBuilder>() {
@@ -48,6 +54,7 @@ public class PieTestActivity extends AppCompatActivity {
                                 .hintIcon(iconUrl);
                     }
                 })
+//                .addGroupItems(new DecorationProp(2, 32, 0, "#000000"), (new Function0<ArrayList<SetItemBuilder>>() {
                 .addGroupItems(new Function0<ArrayList<SetItemBuilder>>() {
                     @Override
                     public ArrayList<SetItemBuilder> invoke() {

@@ -2,6 +2,7 @@
 buildscript {
     ext {
         kotlin_version = "1.4.10"
+
     }
 
     repositories {
@@ -23,9 +24,9 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven {
-            url '/Users/gara/Desktop/projects/SettingCreatorHelper/repository'
-        }
+//        maven {
+//            url '/Users/gara/Desktop/projects/SettingCreatorHelper/repository'
+//        }
     }
 }
 
