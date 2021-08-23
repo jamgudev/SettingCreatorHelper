@@ -4,10 +4,15 @@ buildscript {
         kotlin_version = "1.4.10"
 
     }
+    File localDir = new File(System.getProperty("user.home") + "/.m2/repository/")
+    rootProject.ext.mavenLocalUrl = "file://"+localDir.getAbsolutePath()
 
     repositories {
         google()
         jcenter()
+        maven {
+            url rootProject.ext.mavenLocalUrl
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"

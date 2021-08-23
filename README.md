@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'io.github.jamgu996:settingpie:1.0.0'
+	implementation 'io.github.jamgudev:settingpie:1.0.0'
 }
 ```
 
@@ -63,7 +63,7 @@ SetListBuilder(vRecycler).showDecoration(true).paddingPair(16, 16).addItem {
 
 ## 详细配置
 
-1. SetListBuilder配置
+### SetListBuilder配置
 
 可以通过SetListBuilder，设置用于整个列表的主题配置，例如边距，列表分割线，以及列表右端箭头配置等，**在SetListBuilder中设置的属性配置，将被适用于所有的设置子项，前提是该设置子项自身没有对指定属性进行配置**
 
@@ -92,7 +92,7 @@ SetListBuilder(recyclerView)
 ```kotlin
 SetListBuilder(recyclerView)
         .paddingPair(16, 12)	
-				.decorationOfTheme(1, 0, 0, "#999999")
+        .decorationOfTheme(1, 0, 0, "#999999")
 ```
 
 上面代码将设置主题分割线高度为1dp，分割线的marginLeft为0、marginRight为0，以及分隔线的颜色为灰色。
@@ -159,7 +159,7 @@ SetListBuilder(mBinding.recycler)
 
 &emsp;
 
-2. SetItemBuilder配置
+### SetItemBuilder配置
 
 用于配置某个设置子项，目前支持配置的属性如下：
 

@@ -43,7 +43,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation project(path: ':settingpie')
 //    implementation 'com.jamgu.openapi:settingpie:1.0.0'
-//    implementation 'io.github.jamgu996:settingpie:1.0.0'
+//    implementation 'io.github.jamgudev:settingpie:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
