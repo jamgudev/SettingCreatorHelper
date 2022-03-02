@@ -41,7 +41,7 @@ class SettingItemDecoration(val props: ArrayList<DecorationProp>): RecyclerView.
         for (i in 0 until parent.childCount) {
             val view = parent.getChildAt(i)
             val globalPosition = parent.getChildAdapterPosition(view)
-            Log.d(TAG, "jamgu -> view : child pos = $i, adapterPos = $globalPosition")
+//            Log.d(TAG, "jamgu -> view : child pos = $i, adapterPos = $globalPosition")
             // 第一个不需要绘制
             if (globalPosition == 0) continue
 
