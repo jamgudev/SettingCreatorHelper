@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'io.github.jamgudev:settingpie:1.0.0'
+	implementation 'io.github.jamgudev:settingpie:1.0.1'
 }
 ```
 
