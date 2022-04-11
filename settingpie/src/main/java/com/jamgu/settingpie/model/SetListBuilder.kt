@@ -236,12 +236,23 @@ class SetListBuilder(private val recyclerView: RecyclerView) {
         return this
     }
 
+    /**
+     * 设置完所有要显示的item后，需调用此方法让item显示出来
+     */
     fun build(): SettingAdapter {
         bindDecoration()
         val adapter = SettingAdapter()
         recyclerView.adapter = adapter
         adapter.setData(setItemList)
         return adapter
+    }
+
+    /**
+     * 设置布局方向，[RecyclerView.HORIZONTAL] 横向, [RecyclerView.VERTICAL] 纵向
+     */
+    fun setLayoutOrientation(layoutOrientation: Int) {
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager
+        layoutManager?.orientation = layoutOrientation
     }
 
     /**
